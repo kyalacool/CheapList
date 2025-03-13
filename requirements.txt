@@ -1,0 +1,7 @@
+sqlalchemy == 2.0.38
+SQLAlchemy_Utils == 0.41.2
+psycopg2 == 2.9.10
+dotenv == 0.9.9
+bs4 == 0.0.2
+requests == 2.32.3
+datetime == 5.5
