@@ -35,12 +35,13 @@ main()
 
 app = Flask(__name__)
 Bootstrap(app)
+hun_en= {'sea_fish' : 'Tengeri hal', 'chicken_meat' : 'Csirkehús', 'cheese' : 'Sajt', 'milk_2_8' : 'Tej (2,8%)', 'egg' : 'Tojás'}
 
-@app.route('/')
+@app.route('/', methods = ['GET','POST'])
 def home():
     update = is_it_updated()
     last_update_result = last_update()
-    return render_template('index.html', list=ALL_MAINTYPE.keys(), update=update, last_update=last_update_result)
+    return render_template('index.html', list=ALL_MAINTYPE.keys(), update=update, last_update=last_update_result, hun_en = hun_en)
 
 @app.route('/submit', methods= ['GET', 'POST'])
 def submit():
@@ -59,7 +60,7 @@ def submit():
             cheapest_shop_result[key] += value
     cheapest_shop_result = dict(sorted(cheapest_shop_result.items(), key= lambda item:item[1]))
     print(cheapest_shop_result)
-    return render_template('submit.html', result = result, cheapest_product_result = cheapest_product_result, cheapest_shop_result= cheapest_shop_result, today = TODAY)
+    return render_template('submit.html', result = result, cheapest_product_result = cheapest_product_result, cheapest_shop_result= cheapest_shop_result, today = TODAY, hun_en= hun_en)
 
 
 if __name__ == '__main__':

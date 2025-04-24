@@ -16,7 +16,11 @@
     <label class="list-group-item d-flex gap-2">
       <input class="form-check-input flex-shrink-0" type="checkbox" name="selected_items" value="{{i}}">
       <span>
-        {{i}}
+          {%if i in hun_en.keys()%}
+          {{ hun_en[i] }}
+          {%else%}
+          {{i}}
+          {%endif%}
       </span>
     </label>
     {%endfor%}
