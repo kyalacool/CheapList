@@ -26,7 +26,8 @@ class Product(Base):
     __tablename__ = 'product'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    price = Column(String, nullable=False)
+    price = Column(Integer, nullable=False)
+    price_type = Column(String, nullable=False)
     price_unit = Column(Integer, nullable=False)
     price_unit_type = Column(String, nullable=False)
     shop_id = Column(Integer, ForeignKey('shop.id'))
@@ -53,7 +54,7 @@ class DbManager:
             else :
                 print('Database already exists!')
 
-    def product_create_and_add (self, maintype: int, name: str,price: int, price_unit: int,price_unit_type: str, shop: str, date: str) -> None:
+    def product_create_and_add (self, maintype: int, name: str,price: int, price_type: str, price_unit: int,price_unit_type: str, shop: str, date: str) -> None:
         session = self.Session()
         if session.query(Shop).filter_by(name=shop).first() is None:
             shop_model = Shop(name = shop)
@@ -64,7 +65,7 @@ class DbManager:
         else :
             type_model = session.query(Type).filter_by(name=maintype).first()
         session.add_all([shop_model,type_model])
-        product_model = Product(name=name, price=price, price_unit=price_unit, price_unit_type=price_unit_type, date=date, type= type_model, shop= shop_model)
+        product_model = Product(name=name, price=price, price_type=price_type, price_unit=price_unit, price_unit_type=price_unit_type, date=date, type= type_model, shop= shop_model)
         session.add(product_model)
         session.commit()
         print(f'{product_model.name} with shop_id{shop_model.id}  and type_id{type_model.id} !')

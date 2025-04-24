@@ -23,8 +23,9 @@ def last_update() -> str:
         result = lastupdate.scalar()
         return result
 
+
 class CheapestClass:
-    def __init__(self, selected_product):
+    def __init__(self, selected_product: str):
         self.selected_product = selected_product
         self.today = str(datetime.today().date())
         self.mytype_id = self.my_type()
@@ -65,9 +66,44 @@ class CheapestClass:
     def get_products_by_price(self) -> dict:
         with engine.connect() as conn:
             query = text(
-                'SELECT shop_id,name FROM product WHERE price_unit = :myprice'
+                'SELECT shop_id,name FROM product WHERE price_unit = :myprice AND type_id= :mytype'
             )
-            all_res = conn.execute(query, {'myprice' : self.myprice}).all()
+            all_res = conn.execute(query, {'myprice' : self.myprice, 'mytype' : self.mytype_id}).all()
             return {
                 self.get_the_name_of_the_shop(r.shop_id): r.name for r in all_res
             }
+
+class CheapestShop:
+    def __init__(self, selected_product: str):
+        self.selected_product = selected_product
+        self.today = str(datetime.today().date())
+        self.mytype_id = self.my_type()
+        self.shops = self.get_all_shop()
+        self.cheapest_price = self.cheapest_price()
+
+    @staticmethod
+    def get_all_shop() -> dict:
+        with engine.connect() as conn:
+            query = text(
+                'SELECT * FROM shop'
+            )
+            all_res = conn.execute(query).all()
+            return {r.id: r.name for r in all_res}
+
+    def my_type(self) -> int:
+        with engine.connect() as connection:
+            mytype = text('SELECT id FROM type WHERE name = :myprod_param')
+            result = connection.execute(mytype, {'myprod_param' : self.selected_product}).scalar()
+            return result
+
+    def cheapest_price(self) -> dict :
+        final_res={}
+        for k,v in self.shops.items():
+            with engine.connect() as conn:
+                query = text(
+                    'SELECT price, shop_id FROM product WHERE type_id = :mytype AND shop_id= :myshop AND date = :mydate ORDER BY price ASC'
+                )
+                allres = conn.execute(query, {"mytype" : self.mytype_id, "myshop": k, 'mydate' : self.today}).scalar()
+                final_res[v] = allres
+        return final_res
+

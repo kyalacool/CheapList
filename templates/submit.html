@@ -7,7 +7,10 @@
 </head>
 <body>
 <div class="d-flex flex-column flex-md-row py-md-5 align-items-center justify-content-center">
-  <p>YOUR CHEAPEST PRODUCT(S)</p>
+  <p>{{today}} </p>
+</div>
+  <div class="d-flex flex-column flex-md-row py-md-5 align-items-center justify-content-center">
+  <p>CHEAPEST PRODUCT(S)</p>
   </div>
 <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
   <div class="list-group">
@@ -15,10 +18,10 @@
     <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
       <div class="d-flex gap-2 w-100 justify-content-between">
         <div>
-          <h6 class="mb-0">{{i}}</h6>
-          <p style="color:green" class="mb-0 opacity-100">{{finalresult[i]['price_unit']}}{{finalresult[i]['unit_type']}}</p>
-          {%for k,v in finalresult[i]['shop_and_product'].items() %}
-          <p class="mb-0 opacity-75">{{k}} : {{v}}</p>
+          <h6 class="mb-0">{{i|upper}}</h6>
+          <p style="color:green" class="mb-0 opacity-100">{{cheapest_product_result[i]['price_unit']}}{{cheapest_product_result[i]['unit_type']}}</p>
+          {%for k,v in cheapest_product_result[i]['shop_and_product'].items() %}
+          <p class="mb-0 opacity-75">{{k|capitalize}} : {{v}}</p>
           {%endfor%}
         </div>
         <small class="opacity-50 text-nowrap">now</small>
@@ -26,8 +29,12 @@
     </a>
     {%endfor%}
     <div class="d-flex flex-column flex-md-row py-md-5 align-items-center justify-content-center">
-    <p>YOUR CHEAPEST SHOP(S)</p>
+    <p>CHEAPEST SHOP(S)</p>
        </div>
+    {% for key,value in cheapest_shop_result.items() %}
+      {{key|capitalize}} : {{value}} Ft
+    <p></p>
+    {%endfor%}
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

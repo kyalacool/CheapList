@@ -20,10 +20,20 @@ class Scraper:
          return product_name.text
 
     @staticmethod
-    def get_price(product: Tag) -> str:
+    def get_price(product: Tag) -> int:
         product_price = product.find('span', class_='price-amount')
-        print(f'price = {product_price.text}')
-        return product_price.text
+        raw_price = product_price.text.replace('\xa0', ' ')
+        result = int(raw_price.split(' ')[0])
+        print(f'price = {result}')
+        return result
+
+    @staticmethod
+    def get_price_type(product: Tag) -> str:
+        product_price = product.find('span', class_='price-amount')
+        raw_price = product_price.text.replace('\xa0', ' ')
+        result = str(raw_price.split(' ')[1])
+        print(f'price_type = {result}')
+        return result
 
     @staticmethod
     def get_price_unit(product: Tag) -> int:
