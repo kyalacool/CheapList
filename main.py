@@ -8,7 +8,7 @@ from database.infos import is_it_updated, last_update, CheapestClass, CheapestSh
 from collections import defaultdict
 
 TODAY = datetime.datetime.today().strftime('%Y-%m-%d')
-ALL_MAINTYPE = {'egg': os.environ.get('EGG_URL'), 'milk_2_8' : os.environ.get('MILK_2_8_URL'), 'cheese':os.environ.get('CHEESE_URL'), 'chicken_meat' : os.environ.get('CHICKEN_MEAT_URL')}
+ALL_MAINTYPE = {'egg': os.environ.get('EGG_URL'), 'milk_2_8' : os.environ.get('MILK_2_8_URL'), 'cheese':os.environ.get('CHEESE_URL'), 'chicken_meat' : os.environ.get('CHICKEN_MEAT_URL'), 'sea_fish' : os.environ.get('SEA_FISH')}
 db = DbManager()
 date = TODAY
 
