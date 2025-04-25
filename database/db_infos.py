@@ -73,11 +73,9 @@ class CheapestClass:
                 self.get_the_name_of_the_shop(r.shop_id): r.name for r in all_res
             }
 
-class CheapestShop:
+class CheapestShop(CheapestClass):
     def __init__(self, selected_product: str):
-        self.selected_product = selected_product
-        self.today = str(datetime.today().date())
-        self.mytype_id = self.my_type()
+        super().__init__(selected_product)
         self.shops = self.get_all_shop()
         self.cheapest_price = self.cheapest_price()
 
@@ -89,12 +87,6 @@ class CheapestShop:
             )
             all_res = conn.execute(query).all()
             return {r.id: r.name for r in all_res}
-
-    def my_type(self) -> int:
-        with engine.connect() as connection:
-            mytype = text('SELECT id FROM type WHERE name = :myprod_param')
-            result = connection.execute(mytype, {'myprod_param' : self.selected_product}).scalar()
-            return result
 
     def cheapest_price(self) -> dict :
         final_res={}

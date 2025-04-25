@@ -54,7 +54,7 @@ class DbManager:
             else :
                 print('Database already exists!')
 
-    def product_create_and_add (self, maintype: int, name: str,price: int, price_type: str, price_unit: int,price_unit_type: str, shop: str, date: str) -> None:
+    def product_create_and_add (self, maintype: str, name: str,price: int, price_type: str, price_unit: int,price_unit_type: str, shop: str, date: str) -> None:
         session = self.Session()
         if session.query(Shop).filter_by(name=shop).first() is None:
             shop_model = Shop(name = shop)
@@ -71,7 +71,7 @@ class DbManager:
         print(f'{product_model.name} with shop_id{shop_model.id}  and type_id{type_model.id} !')
         session.close()
 
-    def add_it(self, date: str,maintype: int) -> bool:
+    def add_it(self, date: str,maintype: str) -> bool:
         session = self.Session()
         try:
             my_maintype= session.query(Type).filter_by(name=maintype).first()

@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from alembic import context
 
-from scraper.database import Base
+from database.db_maker import Base
 
 
 # this is the Alembic Config object, which provides

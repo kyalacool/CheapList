@@ -1,11 +1,12 @@
-from scraper.database import DbManager
 import datetime
 import os
-from scraper.scraper_main import Scraper
+from collections import defaultdict
+
 from flask import Flask, render_template, request
 from flask_bootstrap5 import Bootstrap
-from database.infos import is_it_updated, last_update, CheapestClass, CheapestShop
-from collections import defaultdict
+
+from database import is_it_updated, last_update, CheapestClass, CheapestShop, DbManager
+from scraper import  Scraper
 
 TODAY = datetime.datetime.today().strftime('%Y-%m-%d')
 ALL_MAINTYPE = {'egg': os.environ.get('EGG_URL'), 'milk_2_8' : os.environ.get('MILK_2_8_URL'), 'cheese':os.environ.get('CHEESE_URL'), 'chicken_meat' : os.environ.get('CHICKEN_MEAT_URL'), 'sea_fish' : os.environ.get('SEA_FISH')}
