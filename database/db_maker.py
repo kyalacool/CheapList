@@ -68,7 +68,7 @@ class DbManager:
         product_model = Product(name=name, price=price, price_type=price_type, price_unit=price_unit, price_unit_type=price_unit_type, date=date, type= type_model, shop= shop_model)
         session.add(product_model)
         session.commit()
-        print(f'{product_model.name} with shop_id{shop_model.id}  and type_id{type_model.id} !')
+        print(f'{product_model.name} with shop_id{shop_model.id}  and type_id{type_model.id} added to the database!')
         session.close()
 
     def add_it(self, date: str,maintype: str) -> bool:

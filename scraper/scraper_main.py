@@ -9,8 +9,8 @@ db = DbManager()
 TODAY = datetime.datetime.today().strftime('%Y-%m-%d')
 
 def main():
+    db.setup()
     for k,v in ALL_MAINTYPE.items():
-        db.setup()
         if db.add_it(TODAY,k):
             try :
                 sc = Scraper(url=v)
@@ -24,8 +24,7 @@ def main():
                     db.product_create_and_add(maintype=k, name=name, price=price, price_type= price_type, price_unit=price_unit, price_unit_type=price_unit_type, shop = shop, date=TODAY)
             except AttributeError:
                 print('Something wrong with the source.')
-        else :
-            print('Today is already scrapped')
+    print('Done.')
 
 
 if __name__ == '__main__':
