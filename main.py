@@ -1,38 +1,11 @@
-import datetime
-import os
 from collections import defaultdict
 
 from flask import Flask, render_template, request
 from flask_bootstrap5 import Bootstrap
 
-from database import is_it_updated, last_update, CheapestClass, CheapestShop, DbManager
-from scraper import  Scraper
+from database import is_it_updated, last_update, CheapestClass, CheapestShop
+from scraper import ALL_MAINTYPE, TODAY
 
-TODAY = datetime.datetime.today().strftime('%Y-%m-%d')
-ALL_MAINTYPE = {'egg': os.environ.get('EGG_URL'), 'milk_2_8' : os.environ.get('MILK_2_8_URL'), 'cheese':os.environ.get('CHEESE_URL'), 'chicken_meat' : os.environ.get('CHICKEN_MEAT_URL'), 'sea_fish' : os.environ.get('SEA_FISH')}
-db = DbManager()
-date = TODAY
-
-def main():
-    for k,v in ALL_MAINTYPE.items():
-        db.setup()
-        if db.add_it(date,k):
-            try :
-                sc = Scraper(url=v)
-                for i in sc.all_product:
-                    name = sc.get_name(product=i)
-                    price = sc.get_price(product=i)
-                    price_type= sc.get_price_type(product= i)
-                    price_unit = sc.get_price_unit(product=i)
-                    price_unit_type = sc.get_price_unit_type(product=i)
-                    shop = sc.get_shop(product=i).lower()
-                    db.product_create_and_add(maintype=k, name=name, price=price, price_type= price_type, price_unit=price_unit, price_unit_type=price_unit_type, shop = shop, date=date)
-            except AttributeError:
-                print('Something wrong with the source.')
-        else :
-            print('Today is already scrapped')
-
-main()
 
 app = Flask(__name__)
 Bootstrap(app)
