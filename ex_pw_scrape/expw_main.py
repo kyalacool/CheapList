@@ -1,17 +1,22 @@
-import datetime
+import requests
 import os
-import sys
 
 from dotenv import load_dotenv
 
-from database import DbManager
-from scraper import  Scraper
+from scraper import ALL_MAINTYPE,TODAY, db, Scraper
 
 load_dotenv()
 
-ALL_MAINTYPE = {'egg': os.environ.get('EGG_URL'), 'milk_2_8' : os.environ.get('MILK_2_8_URL'), 'cheese':os.environ.get('CHEESE_URL'), 'chicken_meat' : os.environ.get('CHICKEN_MEAT_URL'), 'sea_fish' : os.environ.get('SEA_FISH')}
-db = DbManager()
-TODAY = datetime.datetime.today().strftime('%Y-%m-%d')
+ex_ip = os.environ.get('EXTERNAL_IP')
+
+def scrape(url):
+    response = requests.get(f'http://{ex_ip}/scrape', params= {'url' : url})
+
+    if response.status_code == 200 :
+        data = response.json()
+        print(f'Result : {data}')
+    else :
+        print('Error:', response.status_code, response.text)
 
 def main():
     db.setup()
@@ -30,7 +35,6 @@ def main():
             except AttributeError:
                 print('Something wrong with the source.')
     print('Done.')
-
 
 if __name__ == '__main__':
     main()
