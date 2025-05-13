@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, result_tuple
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import re
 
@@ -52,7 +52,7 @@ class CheapestClass:
         with engine.connect() as conn:
             query = text(
                 'SELECT price_unit FROM product WHERE date = :date_param AND type_id = :mytype_param ORDER BY price_unit ASC')
-            result = conn.execute(query, {'date_param': self.today, 'mytype_param': self.mytype_id}).scalar()
+            result = conn.execute(query, {'date_param': last_update(), 'mytype_param': self.mytype_id}).scalar()
             return result
 
     def cheapest_unit_type(self) -> str:
@@ -96,6 +96,8 @@ class CheapestShop(CheapestClass):
                     'SELECT price, shop_id FROM product WHERE type_id = :mytype AND shop_id= :myshop AND date = :mydate ORDER BY price ASC'
                 )
                 allres = conn.execute(query, {"mytype" : self.mytype_id, "myshop": k, 'mydate' : self.today}).scalar()
+                if allres is None:
+                    allres = conn.execute(query, {"mytype": self.mytype_id, "myshop": k, 'mydate': last_update()}).scalar()
                 final_res[v] = allres
         return final_res
 

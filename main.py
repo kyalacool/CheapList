@@ -4,7 +4,7 @@ from flask import Flask, render_template, request
 from flask_bootstrap5 import Bootstrap
 
 from database import is_it_updated, last_update, CheapestClass, CheapestShop
-from scraper import ALL_MAINTYPE, TODAY
+from ex_pw_scrape import ALL_MAINTYPE, TODAY
 
 
 app = Flask(__name__)
@@ -20,6 +20,7 @@ def home():
 @app.route('/submit', methods= ['GET', 'POST'])
 def submit():
     result = request.form.getlist('selected_items')
+    last_update_result = last_update()
     cheapest_product_result = {}
     for i in result :
         cc = CheapestClass(i)
@@ -33,8 +34,7 @@ def submit():
         for key, value in d.items():
             cheapest_shop_result[key] += value
     cheapest_shop_result = dict(sorted(cheapest_shop_result.items(), key= lambda item:item[1]))
-    print(cheapest_shop_result)
-    return render_template('submit.html', result = result, cheapest_product_result = cheapest_product_result, cheapest_shop_result= cheapest_shop_result, today = TODAY, hun_en= hun_en)
+    return render_template('submit.html', result = result, cheapest_product_result = cheapest_product_result, cheapest_shop_result= cheapest_shop_result, today = TODAY, last_update=last_update_result, hun_en= hun_en)
 
 
 if __name__ == '__main__':
